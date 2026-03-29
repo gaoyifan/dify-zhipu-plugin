@@ -13,6 +13,10 @@ This repository packages a Dify model provider plugin for ZHIPU AI, based on the
 - `glm-5` metadata is aligned with Zhipu's public GLM-5 model card.
 - `glm-5.1` is exposed as an additional predefined model entry. Zhipu has not published a standalone public model card for it at the time this repository was prepared, so its context and output limits are aligned with the public GLM-5 family documentation.
 
+## Technical docs
+
+Maintainer-oriented technical documentation is available in `docs/`.
+
 ## Local development
 
 ```bash
