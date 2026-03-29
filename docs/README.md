@@ -21,6 +21,6 @@
 ## 当前发布信息
 
 - GitHub 仓库：`https://github.com/gaoyifan/dify-zhipu-plugin`
-- 当前版本：`0.1.0`
-- 当前标签：`v0.1.0`
-- 当前发布包：`zhipuai-0.1.0.difypkg`
+- 当前版本：`0.1.1`
+- 当前标签：`v0.1.1`
+- 当前发布包：`zhipuai-0.1.1.difypkg`

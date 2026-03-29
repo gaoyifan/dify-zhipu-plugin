@@ -29,13 +29,13 @@ python -m main
 Use the Dify CLI:
 
 ```bash
-dify plugin package . -o zhipuai-0.1.0.difypkg
+dify plugin package . -o zhipuai-0.1.1.difypkg
 ```
 
 Or use the `dify-plugin` binary from `langgenius/dify-plugin-daemon` releases:
 
 ```bash
-./dify-plugin plugin package . -o zhipuai-0.1.0.difypkg
+./dify-plugin plugin package . -o zhipuai-0.1.1.difypkg
 ```
 
 ## Publish for Dify GitHub installation
@@ -49,8 +49,8 @@ Dify installs GitHub plugins from release assets, not directly from source code.
 Example:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
 After the workflow succeeds, Dify can install the plugin from this repository by selecting the release tag and the generated `.difypkg` asset.
