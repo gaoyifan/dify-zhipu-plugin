@@ -50,8 +50,9 @@ unzip -l zhipuai-0.1.2.difypkg
 重点确认：
 
 - 包内存在 `manifest.yaml`
-- 包内存在新增模型 `models/llm/glm-5.yaml`
-- 包内存在新增模型 `models/llm/glm-5.1.yaml`
+- 包内存在公开 LLM `models/llm/glm-5.yaml`
+- 包内存在公开 LLM `models/llm/glm-5.1.yaml`
+- 包内存在 embedding 模型 `models/text_embedding/embedding-2.yaml`
 - 包内不包含 `.git/`、`.github/`、`.tools/`、`.venv/`
 
 ## 3. 新增模型的维护方式
@@ -59,11 +60,12 @@ unzip -l zhipuai-0.1.2.difypkg
 如果未来需要继续添加智谱新模型，建议按以下顺序操作。
 
 1. 在 `models/llm/` 下新增对应的 YAML 声明文件
-2. 把模型 id 写入 `models/llm/_position.yaml`
-3. 如果新模型引入新的调用参数，再修改 `models/llm/llm.py`
-4. 重新执行本地验证与打包检查
+2. 如果要公开该模型，同时把模型文件写入 `provider/zhipuai.yaml` 的 `predefined` whitelist
+3. 把模型 id 写入 `models/llm/_position.yaml`
+4. 如果新模型引入新的调用参数，再修改 `models/llm/llm.py`
+5. 重新执行本地验证与打包检查
 
-只有新增 YAML 而不更新 `_position.yaml`，通常会导致模型虽然存在但展示顺序不正确，甚至不易在 Dify 中发现。
+只有新增 YAML 而不更新 provider whitelist 与 `_position.yaml`，通常会导致模型文件存在但不会在 Dify 中公开。
 
 ## 4. 版本管理
 

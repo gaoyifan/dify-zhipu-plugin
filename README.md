@@ -1,17 +1,32 @@
 # Dify Zhipu Plugin
 
-This repository packages a Dify model provider plugin for ZHIPU AI, based on the official `langgenius/dify-official-plugins` `models/zhipuai` implementation and extended with `glm-5` and `glm-5.1`.
+This repository packages a Dify model provider plugin for ZHIPU AI, aligned to the current `@z_ai/coding-helper` Coding Plan model set and extended with `glm-5` and `glm-5.1`.
 
 ## Included models
 
-- All predefined models from the current official ZHIPU AI Dify plugin base
-- `glm-5`
 - `glm-5.1`
+- `glm-5`
+- `glm-4.7`
+- `glm-4.6`
+- `glm-4.5-air`
+- `glm-4-plus`
+- `embedding-2`
+- `embedding-3`
+- `text_embedding`
 
-## Notes
+## Defaults
 
+- Default endpoint: `https://open.bigmodel.cn/api/coding/paas/v4`
+- Supported model types: `llm`, `text-embedding`
 - `glm-5` metadata is aligned with Zhipu's public GLM-5 model card.
-- `glm-5.1` is exposed as an additional predefined model entry. Zhipu has not published a standalone public model card for it at the time this repository was prepared, so its context and output limits are aligned with the public GLM-5 family documentation.
+- `glm-5.1` is exposed as an additional predefined model entry. Zhipu has not published a standalone public model card for it yet, so its limits are aligned with the public GLM-5 family documentation.
+- `embedding-2`, `embedding-3`, and `text_embedding` were verified to work on both standard PAAS and Coding Plan endpoints, even though they are not returned by the `/models` list API.
+
+## Endpoint overrides
+
+- China Coding Plan default: `https://open.bigmodel.cn/api/coding/paas/v4`
+- Global Coding Plan override: `https://api.z.ai/api/coding/paas/v4`
+- Standard PAAS override: `https://open.bigmodel.cn/api/paas/v4`
 
 ## Technical docs
 

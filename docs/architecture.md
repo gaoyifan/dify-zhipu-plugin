@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
 ### `provider/zhipuai.py`
 
-该文件实现 provider 凭证校验逻辑。当前实现沿用官方插件方案，通过获取一个 LLM 实例并调用 `validate_credentials()` 验证配置是否可用。
+该文件实现 provider 凭证校验逻辑。当前实现不再依赖某个硬编码聊天模型试调用，而是使用 `zai-sdk` 生成的鉴权头请求 `GET /models`，验证 endpoint 与 API key 是否可用。
 
 ## 5. 模型实现层
 
@@ -89,6 +89,8 @@ if __name__ == '__main__':
 
 - 兼容不同字段名的凭证读取
 - 标准化 `api_key` / `base_url`
+- 构造 `ZhipuAiClient`
+- 使用 SDK 鉴权头请求 `/models`
 - 提供统一错误映射入口
 
 ### `models/llm/llm.py`
@@ -111,13 +113,20 @@ client.chat.completions.create(...)
 
 ### `models/text_embedding/text_embedding.py`
 
-该文件负责智谱 embedding 模型的调用，结构与官方插件保持一致。
+该文件负责智谱 embedding 模型的调用。当前实现会继承 provider 中配置的 `base_url`，因此既可以走标准 PAAS，也可以走 Coding Plan endpoint。
 
 ## 6. 模型声明文件
 
 ### LLM 模型清单
 
-`models/llm/*.yaml` 是每个预定义模型的能力声明。Dify 会读取这些 YAML，将其展示为 provider 可选模型。
+`models/llm/*.yaml` 是每个预定义模型的能力声明。本仓库虽然保留了更多历史 YAML，但 provider 当前只显式暴露 6 个 LLM：
+
+- `glm-5.1`
+- `glm-5`
+- `glm-4.7`
+- `glm-4.6`
+- `glm-4.5-air`
+- `glm-4-plus`
 
 典型字段包括：
 
@@ -132,23 +141,28 @@ client.chat.completions.create(...)
 
 ### 模型排序
 
-`models/llm/_position.yaml` 控制模型在 Dify 中的展示顺序。新增模型后，需要同步把 model id 写入该文件。
+`models/llm/_position.yaml` 控制当前公开 LLM 在 Dify 中的展示顺序。对于不再公开的历史模型，可以保留 YAML 文件，但不写入 provider whitelist 与 `_position.yaml`。
 
-## 7. 新增的 `glm-5` 与 `glm-5.1`
+## 7. 当前公开模型集
 
-本仓库新增了两个模型声明文件：
+### LLM
 
-- `models/llm/glm-5.yaml`
-- `models/llm/glm-5.1.yaml`
-
-实现策略如下：
-
-- `glm-5`
-  - 直接作为新的预定义模型接入
 - `glm-5.1`
-  - 作为额外预定义模型接入
+- `glm-5`
+- `glm-4.7`
+- `glm-4.6`
+- `glm-4.5-air`
+- `glm-4-plus`
 
 其中 `glm-5.1` 当前没有找到独立公开模型卡，因此本仓库将其上下文长度、输出上限和参数边界与公开的 `GLM-5` 家族能力保持一致。这是一个显式推断，不是来自公开模型页的逐项逐字映射。
+
+### Text Embedding
+
+- `embedding-2`
+- `embedding-3`
+- `text_embedding`
+
+这些 embedding 模型已经实测可在标准 PAAS 与 Coding Plan endpoint 上调用成功，但它们不会出现在 `/models` 列表响应中，因此 embedding 校验必须基于实际调用，而不是基于模型枚举。
 
 ## 8. 打包边界控制
 

@@ -4,8 +4,8 @@ author: gaoyifan
 name: zhipuai
 created_at: '2026-03-29T07:17:55Z'
 description: 
-  en_US: ZHIPU AI with GLM-5 and GLM-5.1
-  zh_Hans: 支持 GLM-5 与 GLM-5.1 的智谱 AI 插件
+  en_US: ZHIPU AI Coding Plan plugin with selected GLM and embedding models
+  zh_Hans: 面向 Coding Plan 的智谱 AI 插件，提供精选 GLM 与向量模型
 icon: icon_s_en.svg
 label:
   en_US: "ZHIPU AI"

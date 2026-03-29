@@ -32,11 +32,13 @@ class ZhipuAITextEmbeddingModel(_CommonZhipuaiAI, TextEmbeddingModel):
         :return: embeddings result
         """
         credentials_kwargs = self._to_credential_kwargs(credentials)
-        client = ZhipuAiClient(api_key=credentials_kwargs["api_key"])
-        (embeddings, embedding_used_tokens) = self.embed_documents(model, client, texts)
+        client = self._build_client(credentials_kwargs)
+        embeddings, embedding_used_tokens = self.embed_documents(model, client, texts)
         return TextEmbeddingResult(
             embeddings=embeddings,
-            usage=self._calc_response_usage(model, credentials_kwargs, embedding_used_tokens),
+            usage=self._calc_response_usage(
+                model, credentials_kwargs, embedding_used_tokens
+            ),
             model=model,
         )
 
@@ -66,12 +68,14 @@ class ZhipuAITextEmbeddingModel(_CommonZhipuaiAI, TextEmbeddingModel):
         """
         try:
             credentials_kwargs = self._to_credential_kwargs(credentials)
-            client = ZhipuAiClient(api_key=credentials_kwargs["api_key"])
+            client = self._build_client(credentials_kwargs)
             self.embed_documents(model=model, client=client, texts=["ping"])
         except Exception as ex:
             raise CredentialsValidateFailedError(str(ex))
 
-    def embed_documents(self, model: str, client: ZhipuAiClient, texts: list[str]) -> tuple[list[list[float]], int]:
+    def embed_documents(
+        self, model: str, client: ZhipuAiClient, texts: list[str]
+    ) -> tuple[list[list[float]], int]:
         """Call out to ZhipuAI's embedding endpoint.
 
         Args:
@@ -87,7 +91,7 @@ class ZhipuAITextEmbeddingModel(_CommonZhipuaiAI, TextEmbeddingModel):
             data = response.data[0]
             embeddings.append(data.embedding)
             embedding_used_tokens += response.usage.total_tokens
-        return ([list(map(float, e)) for e in embeddings], embedding_used_tokens)
+        return [list(map(float, e)) for e in embeddings], embedding_used_tokens
 
     def _calc_response_usage(self, model: str, credentials: dict, tokens: int) -> EmbeddingUsage:
         """

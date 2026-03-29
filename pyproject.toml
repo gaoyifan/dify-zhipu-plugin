@@ -1,7 +1,7 @@
 [project]
 name = "dify-zhipu-plugin"
 version = "0.1.2"
-description = "Dify Zhipu model provider plugin with GLM-5 and GLM-5.1"
+description = "Dify Zhipu Coding Plan plugin with selected GLM and embedding models"
 readme = "README.md"
 requires-python = ">=3.12"
 

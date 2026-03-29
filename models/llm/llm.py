@@ -107,14 +107,13 @@ class ZhipuAILargeLanguageModel(_CommonZhipuaiAI, LargeLanguageModel):
         """
         try:
             credentials_kwargs = self._to_credential_kwargs(credentials)
-            self._generate(
-                model=model,
-                credentials_kwargs=credentials_kwargs,
-                prompt_messages=[UserPromptMessage(content="hello")],
-                model_parameters={"temperature": 0.5, "thinking": False},
-                tools=[],
-                stream=False,
+            available_models = self._list_available_models(
+                credentials_kwargs=credentials_kwargs
             )
+            if model not in available_models:
+                raise ValueError(
+                    f"Model '{model}' is not available for the configured endpoint"
+                )
         except Exception as ex:
             raise CredentialsValidateFailedError(str(ex))
 

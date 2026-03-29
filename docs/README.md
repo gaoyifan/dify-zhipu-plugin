@@ -11,10 +11,17 @@
 
 ## 插件定位
 
-本仓库基于 Dify 官方 `zhipuai` 模型插件实现，保留官方 provider 结构，并在此基础上补充：
+本仓库保留 Dify `zhipuai` provider 结构，但当前发布版本面向 Coding Plan 默认端点，公开的模型集合收敛为：
 
-- `glm-5`
 - `glm-5.1`
+- `glm-5`
+- `glm-4.7`
+- `glm-4.6`
+- `glm-4.5-air`
+- `glm-4-plus`
+- `embedding-2`
+- `embedding-3`
+- `text_embedding`
 
 当前仓库是一个可直接发布到独立 GitHub 仓库的 Dify 模型插件仓库。Dify 安装时读取的是 GitHub Release 中的 `.difypkg` 资产，而不是仓库源码本身。
 
