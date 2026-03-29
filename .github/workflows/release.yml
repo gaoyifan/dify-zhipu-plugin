@@ -19,8 +19,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           CLI_TAG=$(gh release view --repo langgenius/dify-plugin-daemon --json tagName -q .tagName)
-          gh release download "$CLI_TAG" --repo langgenius/dify-plugin-daemon -p "dify-plugin-linux-amd64" -O dify-plugin
-          chmod +x dify-plugin
+          mkdir -p "$RUNNER_TEMP/bin"
+          gh release download "$CLI_TAG" --repo langgenius/dify-plugin-daemon -p "dify-plugin-linux-amd64" -D "$RUNNER_TEMP/bin"
+          chmod +x "$RUNNER_TEMP/bin/dify-plugin-linux-amd64"
 
       - name: Read manifest info
         id: manifest
@@ -42,7 +43,7 @@ jobs:
 
       - name: Package plugin
         run: |
-          ./dify-plugin plugin package . -o "${{ steps.manifest.outputs.package_name }}"
+          "$RUNNER_TEMP/bin/dify-plugin-linux-amd64" plugin package . -o "${{ steps.manifest.outputs.package_name }}"
 
       - name: Create or update GitHub release
         env:
