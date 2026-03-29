@@ -1,0 +1,10 @@
+.git/
+.github/
+.tools/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.difypkg
+.gitignore
+.difyignore
